@@ -2,9 +2,8 @@
 import { useState, useEffect } from 'react'
 import Header from './components/Header'
 import AlertaCard from './components/AlertaCard'
+import api from './services/api'
 import './App.css'
-
-const URL_API = 'http://localhost:8080/api/incidentes'
 
 function App() {
   const [incidentes, setIncidentes] = useState([])
@@ -24,18 +23,13 @@ function App() {
   useEffect(() => {
     async function obtenerIncidentes() {
       try {
-        const respuesta = await fetch(URL_API)
+        const respuesta = await api.get('/incidentes')
 
-        if (!respuesta.ok) {
-          throw new Error('No fue posible consultar los incidentes.')
-        }
-
-        const datos = await respuesta.json()
-
-        setIncidentes(datos)
+        setIncidentes(respuesta.data)
         setError('')
       } catch (error) {
         console.error('Error al consultar incidentes:', error)
+
         setError(
           'No se pudieron cargar los incidentes. Comprueba que el servidor esté funcionando.'
         )
@@ -64,23 +58,9 @@ function App() {
     setErrorFormulario('')
 
     try {
-      const respuesta = await fetch(URL_API, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formulario)
-      })
+      const respuesta = await api.post('/incidentes', formulario)
 
-      if (!respuesta.ok) {
-        const mensajeServidor = await respuesta.text()
-
-        throw new Error(
-          mensajeServidor || 'No fue posible registrar el incidente.'
-        )
-      }
-
-      const nuevoIncidente = await respuesta.json()
+      const nuevoIncidente = respuesta.data
 
       setIncidentes((incidentesActuales) => [
         ...incidentesActuales,
