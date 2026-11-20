@@ -1,33 +1,61 @@
 
-function AlertaCard({ nombre, descripcion, nivelRiesgo }) {
-  if (!nombre || !descripcion || !nivelRiesgo) {
+function AlertaCard({ incidente }) {
+  if (!incidente) {
     return null
   }
 
+  const estado = incidente.estado || 'SIN ESTADO'
+
+  const claseEstado = estado.toLowerCase()
+
   function verDetalle() {
-    console.log('Alerta seleccionada:', nombre)
+    console.log('Incidente seleccionado:', incidente)
   }
 
   return (
-    <>
-      <article className="card">
-        <span className="bagge">{nivelRiesgo}</span>
+    <article className="card-incidente">
+      <div className="card-incidente-superior">
+        <span className={`estado-incidente ${claseEstado}`}>
+          {estado.replace('_', ' ')}
+        </span>
 
-        <h2>{nombre}</h2>
+        <span className="tipo-incidente">
+          {incidente.tipoIncidente}
+        </span>
+      </div>
 
-        <p>{descripcion}</p>
+      <h3>{incidente.titulo}</h3>
 
+      <p className="descripcion-incidente">
+        {incidente.descripcion}
+      </p>
+
+      <div className="datos-incidente">
         <p>
-          {nivelRiesgo === 'Riesgo alto'
-            ? 'Esta alerta requiere atención inmediata.'
-            : 'Esta alerta requiere seguimiento.'}
+          <strong>Origen:</strong> {incidente.origen}
         </p>
 
-        <button type="button" onClick={verDetalle}>
-          Ver más
-        </button>
-      </article>
-    </>
+        <p>
+          <strong>Fecha:</strong>{' '}
+          {incidente.fechaRegistro
+            ? new Date(incidente.fechaRegistro).toLocaleString('es-CO')
+            : 'No disponible'}
+        </p>
+
+        <p>
+          <strong>Usuario:</strong>{' '}
+          {incidente.nombreUsuario || 'Sin usuario asociado'}
+        </p>
+      </div>
+
+      <button
+        type="button"
+        className="boton-detalle"
+        onClick={verDetalle}
+      >
+        Ver detalles
+      </button>
+    </article>
   )
 }
 

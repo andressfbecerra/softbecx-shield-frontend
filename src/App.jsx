@@ -5,148 +5,114 @@ import AlertaCard from './components/AlertaCard'
 import './App.css'
 
 function App() {
-  const [textoBusqueda, setTextoBusqueda] = useState('')
-
-  const [alertas, setAlertas] = useState([
-    {
-      id: 1,
-      nombre: 'Correo sospechoso',
-      descripcion: 'Posible intento de phishing detectado.',
-      nivelRiesgo: 'Riesgo alto'
-    },
-    {
-      id: 2,
-      nombre: 'Enlace sospechoso',
-      descripcion: 'Se detectó una URL que podría dirigir a un sitio fraudulento.',
-      nivelRiesgo: 'Riesgo medio'
-    },
-    {
-      id: 3,
-      nombre: 'Actividad inusual',
-      descripcion: 'Se identificó un comportamiento de acceso fuera de lo habitual.',
-      nivelRiesgo: 'Riesgo bajo'
-    }
-  ])
-
-  const [nombreIncidente, setNombreIncidente] = useState('')
-  const [descripcionIncidente, setDescripcionIncidente] = useState('')
-  const [nivelRiesgoIncidente, setNivelRiesgoIncidente] = useState('Riesgo medio')
+  const [incidentes, setIncidentes] = useState([])
+  const [cargando, setCargando] = useState(true)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    console.log('Panel de seguridad cargado')
+    async function obtenerIncidentes() {
+      try {
+        const respuesta = await fetch(
+          'http://localhost:8080/api/incidentes'
+        )
+
+        if (!respuesta.ok) {
+          throw new Error('No fue posible consultar los incidentes.')
+        }
+
+        const datos = await respuesta.json()
+
+        setIncidentes(datos)
+        setError('')
+      } catch (error) {
+        console.error('Error al consultar incidentes:', error)
+        setError('No se pudieron cargar los incidentes. Comprueba que el servidor esté funcionando.')
+      } finally {
+        setCargando(false)
+      }
+    }
+
+    obtenerIncidentes()
   }, [])
 
-  useEffect(() => {
-    console.log('La lista de alertas ha cambiado:', alertas.length)
-  }, [alertas])
+  const totalIncidentes = incidentes.length
 
-  function buscarAlerta(evento) {
-    setTextoBusqueda(evento.target.value)
-  }
+  const incidentesPendientes = incidentes.filter(
+    (incidente) => incidente.estado === 'PENDIENTE'
+  ).length
 
-  function enviarReporte(evento) {
-    evento.preventDefault()
-
-    const nuevaAlerta = {
-      id: Date.now(),
-      nombre: nombreIncidente,
-      descripcion: descripcionIncidente,
-      nivelRiesgo: nivelRiesgoIncidente
-    }
-
-    setAlertas([...alertas, nuevaAlerta])
-
-    setNombreIncidente('')
-    setDescripcionIncidente('')
-    setNivelRiesgoIncidente('Riesgo medio')
-  }
-
-  const totalAlertas = alertas.reduce((acumulador) => {
-    return acumulador + 1
-  }, 0)
-
-  const alertasRiesgoAlto = alertas.reduce((acumulador, alerta) => {
-    return alerta.nivelRiesgo === 'Riesgo alto'
-      ? acumulador + 1
-      : acumulador
-  }, 0)
+  const incidentesEnRevision = incidentes.filter(
+    (incidente) => incidente.estado === 'EN_REVISION'
+  ).length
 
   return (
     <>
       <Header />
 
-      <main>
-        <h1>Panel de seguridad</h1>
+      <main className="panel-principal" id="inicio">
+        <section className="bienvenida">
+          <p className="texto-superior">CENTRO DE SEGURIDAD DIGITAL</p>
 
-        <p>Total de alertas: {totalAlertas}</p>
+          <h1>Panel de seguridad</h1>
 
-        <p>Alertas de riesgo alto: {alertasRiesgoAlto}</p>
+          <p>
+            Supervisa y consulta los incidentes registrados en SoftBecX Shield.
+          </p>
+        </section>
 
-        <input
-          type="text"
-          placeholder="Buscar alerta..."
-          value={textoBusqueda}
-          onChange={buscarAlerta}
-        />
+        <section className="resumen-incidentes">
+          <article className="resumen-card">
+            <span>Total de incidentes</span>
+            <strong>{totalIncidentes}</strong>
+          </article>
 
-        <p>Texto de búsqueda: {textoBusqueda}</p>
+          <article className="resumen-card">
+            <span>Pendientes</span>
+            <strong>{incidentesPendientes}</strong>
+          </article>
 
-        {alertas.map((alerta) => (
-          <AlertaCard
-            key={alerta.id}
-            nombre={alerta.nombre}
-            descripcion={alerta.descripcion}
-            nivelRiesgo={alerta.nivelRiesgo}
-          />
-        ))}
+          <article className="resumen-card">
+            <span>En revisión</span>
+            <strong>{incidentesEnRevision}</strong>
+          </article>
+        </section>
 
-        <section id="reportar">
-          <h2>Reportar incidente de seguridad</h2>
+        <section className="seccion-incidentes" id="incidentes">
+          <div className="encabezado-seccion">
+            <div>
+              <h2>Incidentes registrados</h2>
+              <p>Información consultada desde la base de datos.</p>
+            </div>
+          </div>
 
-          <form onSubmit={enviarReporte}>
-            <label htmlFor="nombreIncidente">
-              Nombre del incidente
-            </label>
+          {cargando && (
+            <p className="mensaje-estado">
+              Cargando incidentes...
+            </p>
+          )}
 
-            <input
-              type="text"
-              id="nombreIncidente"
-              placeholder="Ejemplo: Correo sospechoso"
-              value={nombreIncidente}
-              onChange={(evento) => setNombreIncidente(evento.target.value)}
-              required
-            />
+          {!cargando && error && (
+            <p className="mensaje-error">
+              {error}
+            </p>
+          )}
 
-            <label htmlFor="descripcionIncidente">
-              Descripción del incidente
-            </label>
+          {!cargando && !error && incidentes.length === 0 && (
+            <p className="mensaje-estado">
+              Todavía no hay incidentes registrados.
+            </p>
+          )}
 
-            <textarea
-              id="descripcionIncidente"
-              placeholder="Describe el incidente..."
-              value={descripcionIncidente}
-              onChange={(evento) => setDescripcionIncidente(evento.target.value)}
-              required
-            />
-
-            <label htmlFor="nivelRiesgoIncidente">
-              Nivel de riesgo
-            </label>
-
-            <select
-              id="nivelRiesgoIncidente"
-              value={nivelRiesgoIncidente}
-              onChange={(evento) => setNivelRiesgoIncidente(evento.target.value)}
-            >
-              <option value="Riesgo alto">Riesgo alto</option>
-              <option value="Riesgo medio">Riesgo medio</option>
-              <option value="Riesgo bajo">Riesgo bajo</option>
-            </select>
-
-            <button type="submit">
-              Enviar reporte
-            </button>
-          </form>
+          {!cargando && !error && incidentes.length > 0 && (
+            <div className="lista-incidentes" id="alertas">
+              {incidentes.map((incidente) => (
+                <AlertaCard
+                  key={incidente.idIncidente}
+                  incidente={incidente}
+                />
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </>
