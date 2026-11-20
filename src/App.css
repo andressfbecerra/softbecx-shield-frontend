@@ -245,7 +245,8 @@
 ======================================== */
 
 .mensaje-estado,
-.mensaje-error {
+.mensaje-error,
+.mensaje-exito {
   padding: 18px;
   border-radius: 8px;
   text-align: center;
@@ -259,6 +260,213 @@
 .mensaje-error {
   background: #FFF0F0;
   color: #A61F1F;
+}
+
+.mensaje-exito {
+  background: #EAF7ED;
+  color: #216E35;
+}
+
+/* ========================================
+   FORMULARIO DE REPORTE
+======================================== */
+
+.pagina-reporte {
+  width: 100%;
+  max-width: 1000px;
+  margin: 45px auto 0;
+  padding: 38px 24px 44px;
+}
+
+.introduccion-reporte {
+  margin-bottom: 28px;
+}
+
+.etiqueta-reporte {
+  display: inline-block;
+  margin-bottom: 10px;
+  color: #C62828;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+}
+
+.introduccion-reporte h2 {
+  margin: 0 0 10px;
+  color: #202124;
+  font-size: 32px;
+}
+
+.introduccion-reporte p {
+  max-width: 700px;
+  margin: 0;
+  color: #55585C;
+  font-size: 17px;
+}
+
+.tarjeta-reporte {
+  padding: 32px;
+  background: #FFFFFF;
+  border: 1px solid #E1E1E1;
+  border-radius: 14px;
+  box-shadow: 0 6px 24px rgba(32, 33, 36, 0.08);
+}
+
+.encabezado-formulario {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #E5E5E5;
+}
+
+.simbolo-reporte {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #FCEAEA;
+  color: #C62828;
+  border-radius: 12px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.encabezado-formulario h3 {
+  margin: 0 0 4px;
+  color: #202124;
+  font-size: 20px;
+}
+
+.encabezado-formulario p {
+  margin: 0;
+  color: #666666;
+  font-size: 15px;
+}
+
+.formulario-reporte {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.campo-formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campo-formulario label {
+  color: #202124;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.campo-formulario input,
+.campo-formulario select,
+.campo-formulario textarea {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #202124;
+  background: #FFFFFF;
+  border: 1px solid #D0D0D0;
+  border-radius: 7px;
+}
+
+.campo-formulario input,
+.campo-formulario select {
+  min-height: 48px;
+}
+
+.campo-formulario textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.campo-formulario input::placeholder,
+.campo-formulario textarea::placeholder {
+  color: #858585;
+}
+
+.campo-formulario input:focus,
+.campo-formulario select:focus,
+.campo-formulario textarea:focus {
+  outline: 2px solid #C62828;
+  outline-offset: 1px;
+  border-color: #C62828;
+}
+
+.campo-formulario small {
+  color: #666666;
+  font-size: 13px;
+}
+
+.boton-enviar {
+  width: 100%;
+  min-height: 50px;
+  padding: 13px 20px;
+  background: #C62828;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 7px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.boton-enviar:hover {
+  background: #A61F1F;
+}
+
+.boton-enviar:disabled {
+  background: #858585;
+  cursor: not-allowed;
+}
+
+.boton-enviar:focus-visible,
+.menu a:focus-visible {
+  outline: 3px solid #C62828;
+  outline-offset: 3px;
+}
+
+.nota-formulario {
+  margin: -10px 0 0;
+  color: #666666;
+  font-size: 13px;
+  text-align: center;
+}
+
+.aviso-seguridad {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 22px;
+  padding: 18px 20px;
+  background: #FFFFFF;
+  border-left: 4px solid #C62828;
+  border-radius: 6px;
+}
+
+.aviso-seguridad span {
+  font-size: 25px;
+  font-weight: bold;
+  color: #C62828;
+}
+
+.aviso-seguridad p {
+  margin: 0;
+  color: #55585C;
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 /* ========================================
@@ -294,5 +502,38 @@
 
   .bienvenida h1 {
     font-size: 29px;
+  }
+
+  .pagina-reporte {
+    padding: 28px 16px 32px;
+  }
+
+  .introduccion-reporte h2 {
+    font-size: 27px;
+  }
+
+  .introduccion-reporte p {
+    font-size: 15px;
+  }
+
+  .tarjeta-reporte {
+    padding: 22px 18px;
+  }
+
+  .encabezado-formulario {
+    gap: 12px;
+  }
+
+  .encabezado-formulario h3 {
+    font-size: 19px;
+  }
+
+  .formulario-reporte {
+    gap: 18px;
+  }
+
+  .aviso-seguridad {
+    align-items: flex-start;
+    padding: 16px;
   }
 }
