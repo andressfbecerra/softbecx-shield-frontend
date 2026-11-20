@@ -29,6 +29,36 @@ function PanelPage() {
     obtenerIncidentes()
   }, [])
 
+  async function actualizarEstado(incidente, nuevoEstado) {
+    const datosActualizados = {
+      titulo: incidente.titulo,
+      descripcion: incidente.descripcion,
+      tipoIncidente: incidente.tipoIncidente,
+      origen: incidente.origen,
+      estado: nuevoEstado,
+      usuario: incidente.idUsuario != null
+        ? { idUsuario: incidente.idUsuario }
+        : null
+    }
+
+    const respuesta = await api.put(
+      `/incidentes/${incidente.idIncidente}`,
+      datosActualizados
+    )
+
+    const incidenteActualizado = respuesta.data
+
+    setIncidentes((listaAnterior) =>
+      listaAnterior.map((elemento) =>
+        elemento.idIncidente === incidenteActualizado.idIncidente
+          ? incidenteActualizado
+          : elemento
+      )
+    )
+
+    return incidenteActualizado
+  }
+
   const totalIncidentes = incidentes.length
 
   const incidentesPendientes = incidentes.filter(
@@ -100,6 +130,7 @@ function PanelPage() {
               <AlertaCard
                 key={incidente.idIncidente}
                 incidente={incidente}
+                onActualizarEstado={actualizarEstado}
               />
             ))}
           </div>

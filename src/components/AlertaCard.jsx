@@ -1,8 +1,16 @@
 
 import { useState } from 'react'
 
-function AlertaCard({ incidente }) {
+function AlertaCard({ incidente, onActualizarEstado }) {
   const [mostrarDetalles, setMostrarDetalles] = useState(false)
+
+  const [estadoSeleccionado, setEstadoSeleccionado] = useState(
+    incidente?.estado || 'PENDIENTE'
+  )
+
+  const [guardando, setGuardando] = useState(false)
+  const [mensajeActualizacion, setMensajeActualizacion] = useState('')
+  const [errorActualizacion, setErrorActualizacion] = useState('')
 
   if (!incidente) {
     return null
@@ -13,6 +21,30 @@ function AlertaCard({ incidente }) {
 
   function verDetalle() {
     setMostrarDetalles(!mostrarDetalles)
+  }
+
+  async function guardarEstado() {
+    setGuardando(true)
+    setMensajeActualizacion('')
+    setErrorActualizacion('')
+
+    try {
+      await onActualizarEstado(incidente, estadoSeleccionado)
+
+      setMensajeActualizacion(
+        'El estado del incidente se actualizó correctamente.'
+      )
+    } catch (error) {
+      console.error('Error al actualizar el incidente:', error)
+
+      setEstadoSeleccionado(incidente.estado || 'PENDIENTE')
+
+      setErrorActualizacion(
+        'No fue posible actualizar el incidente. Inténtalo nuevamente.'
+      )
+    } finally {
+      setGuardando(false)
+    }
   }
 
   return (
@@ -79,6 +111,48 @@ function AlertaCard({ incidente }) {
             {incidente.correoUsuario || 'No disponible'}
           </p>
         </div>
+      )}
+
+      <div className="campo-formulario">
+        <label htmlFor={`estado-${incidente.idIncidente}`}>
+          Actualizar estado del incidente
+        </label>
+
+        <select
+          id={`estado-${incidente.idIncidente}`}
+          value={estadoSeleccionado}
+          onChange={(evento) => {
+            setEstadoSeleccionado(evento.target.value)
+            setMensajeActualizacion('')
+            setErrorActualizacion('')
+          }}
+          disabled={guardando}
+        >
+          <option value="PENDIENTE">Pendiente</option>
+          <option value="EN_REVISION">En revisión</option>
+          <option value="RESUELTO">Resuelto</option>
+        </select>
+      </div>
+
+      <button
+        type="button"
+        className="boton-detalle"
+        onClick={guardarEstado}
+        disabled={guardando || estadoSeleccionado === estado}
+      >
+        {guardando ? 'Guardando...' : 'Guardar estado'}
+      </button>
+
+      {mensajeActualizacion && (
+        <p className="mensaje-exito" role="status">
+          {mensajeActualizacion}
+        </p>
+      )}
+
+      {errorActualizacion && (
+        <p className="mensaje-error" role="alert">
+          {errorActualizacion}
+        </p>
       )}
     </article>
   )
