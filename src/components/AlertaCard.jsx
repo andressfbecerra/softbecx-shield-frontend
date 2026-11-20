@@ -1,15 +1,18 @@
 
+import { useState } from 'react'
+
 function AlertaCard({ incidente }) {
+  const [mostrarDetalles, setMostrarDetalles] = useState(false)
+
   if (!incidente) {
     return null
   }
 
   const estado = incidente.estado || 'SIN ESTADO'
-
   const claseEstado = estado.toLowerCase()
 
   function verDetalle() {
-    console.log('Incidente seleccionado:', incidente)
+    setMostrarDetalles(!mostrarDetalles)
   }
 
   return (
@@ -52,9 +55,31 @@ function AlertaCard({ incidente }) {
         type="button"
         className="boton-detalle"
         onClick={verDetalle}
+        aria-expanded={mostrarDetalles}
       >
-        Ver detalles
+        {mostrarDetalles ? 'Ocultar detalles' : 'Ver detalles'}
       </button>
+
+      {mostrarDetalles && (
+        <div className="detalles-adicionales">
+          <h4>Información adicional</h4>
+
+          <p>
+            <strong>ID del incidente:</strong>{' '}
+            {incidente.idIncidente}
+          </p>
+
+          <p>
+            <strong>ID del usuario:</strong>{' '}
+            {incidente.idUsuario || 'Sin usuario asociado'}
+          </p>
+
+          <p>
+            <strong>Correo del usuario:</strong>{' '}
+            {incidente.correoUsuario || 'No disponible'}
+          </p>
+        </div>
+      )}
     </article>
   )
 }
