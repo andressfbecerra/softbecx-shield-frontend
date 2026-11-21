@@ -537,3 +537,102 @@
     padding: 16px;
   }
 }
+
+/* ========================================
+   FILTROS DE INCIDENTES
+======================================== */
+
+.filtros-incidentes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+  align-items: end;
+  gap: 18px;
+  margin: 25px 0 15px;
+  padding: 22px;
+  background: #FFFFFF;
+  border: 1px solid #DADADA;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.campo-filtro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.campo-filtro label {
+  color: #202124;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.campo-filtro select {
+  width: 100%;
+  min-height: 45px;
+  padding: 10px 12px;
+  color: #202124;
+  background: #FFFFFF;
+  border: 1px solid #D0D0D0;
+  border-radius: 7px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.campo-filtro select:focus {
+  outline: 2px solid #C62828;
+  outline-offset: 1px;
+  border-color: #C62828;
+}
+
+.boton-limpiar-filtros {
+  min-height: 45px;
+  padding: 10px 18px;
+  background: #202124;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 7px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.boton-limpiar-filtros:hover:not(:disabled) {
+  background: #C62828;
+}
+
+.boton-limpiar-filtros:disabled {
+  background: #858585;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.boton-limpiar-filtros:focus-visible {
+  outline: 3px solid #C62828;
+  outline-offset: 3px;
+}
+
+.resultado-filtros {
+  margin: 15px 0 20px;
+  color: #666666;
+  font-size: 13px;
+}
+
+/* ========================================
+   DISEÑO ADAPTABLE DE LOS FILTROS
+======================================== */
+
+@media (max-width: 768px) {
+  .filtros-incidentes {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding: 18px;
+  }
+
+  .boton-limpiar-filtros {
+    width: 100%;
+  }
+}
