@@ -59,6 +59,16 @@ function PanelPage() {
     return incidenteActualizado
   }
 
+  async function eliminarIncidente(idIncidente) {
+    await api.delete(`/incidentes/${idIncidente}`)
+
+    setIncidentes((listaAnterior) =>
+      listaAnterior.filter(
+        (incidente) => incidente.idIncidente !== idIncidente
+      )
+    )
+  }
+
   const totalIncidentes = incidentes.length
 
   const incidentesPendientes = incidentes.filter(
@@ -131,6 +141,7 @@ function PanelPage() {
                 key={incidente.idIncidente}
                 incidente={incidente}
                 onActualizarEstado={actualizarEstado}
+                onEliminarIncidente={eliminarIncidente}
               />
             ))}
           </div>

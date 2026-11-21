@@ -1,7 +1,11 @@
 
 import { useState } from 'react'
 
-function AlertaCard({ incidente, onActualizarEstado }) {
+function AlertaCard({
+  incidente,
+  onActualizarEstado,
+  onEliminarIncidente
+}) {
   const [mostrarDetalles, setMostrarDetalles] = useState(false)
 
   const [estadoSeleccionado, setEstadoSeleccionado] = useState(
@@ -9,8 +13,11 @@ function AlertaCard({ incidente, onActualizarEstado }) {
   )
 
   const [guardando, setGuardando] = useState(false)
+  const [eliminando, setEliminando] = useState(false)
+
   const [mensajeActualizacion, setMensajeActualizacion] = useState('')
   const [errorActualizacion, setErrorActualizacion] = useState('')
+  const [errorEliminacion, setErrorEliminacion] = useState('')
 
   if (!incidente) {
     return null
@@ -44,6 +51,37 @@ function AlertaCard({ incidente, onActualizarEstado }) {
       )
     } finally {
       setGuardando(false)
+    }
+  }
+
+  async function eliminarIncidente() {
+    const confirmar = window.confirm(
+      `¿Estás seguro de que deseas eliminar el incidente "${incidente.titulo}"? Esta acción no se puede deshacer.`
+    )
+
+    if (!confirmar) {
+      return
+    }
+
+    setEliminando(true)
+    setErrorEliminacion('')
+
+    try {
+      await onEliminarIncidente(incidente.idIncidente)
+    } catch (error) {
+      console.error('Error al eliminar el incidente:', error)
+
+      const mensajeServidor = error.response?.data?.mensaje
+
+      if (error.response?.status === 409 && mensajeServidor) {
+        setErrorEliminacion(mensajeServidor)
+      } else {
+        setErrorEliminacion(
+          'No fue posible eliminar el incidente. Inténtalo nuevamente.'
+        )
+      }
+    } finally {
+      setEliminando(false)
     }
   }
 
@@ -126,7 +164,7 @@ function AlertaCard({ incidente, onActualizarEstado }) {
             setMensajeActualizacion('')
             setErrorActualizacion('')
           }}
-          disabled={guardando}
+          disabled={guardando || eliminando}
         >
           <option value="PENDIENTE">Pendiente</option>
           <option value="EN_REVISION">En revisión</option>
@@ -138,7 +176,11 @@ function AlertaCard({ incidente, onActualizarEstado }) {
         type="button"
         className="boton-detalle"
         onClick={guardarEstado}
-        disabled={guardando || estadoSeleccionado === estado}
+        disabled={
+          guardando ||
+          eliminando ||
+          estadoSeleccionado === estado
+        }
       >
         {guardando ? 'Guardando...' : 'Guardar estado'}
       </button>
@@ -152,6 +194,21 @@ function AlertaCard({ incidente, onActualizarEstado }) {
       {errorActualizacion && (
         <p className="mensaje-error" role="alert">
           {errorActualizacion}
+        </p>
+      )}
+
+      <button
+        type="button"
+        className="boton-detalle"
+        onClick={eliminarIncidente}
+        disabled={guardando || eliminando}
+      >
+        {eliminando ? 'Eliminando...' : 'Eliminar incidente'}
+      </button>
+
+      {errorEliminacion && (
+        <p className="mensaje-error" role="alert">
+          {errorEliminacion}
         </p>
       )}
     </article>
