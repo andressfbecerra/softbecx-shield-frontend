@@ -8,6 +8,7 @@ import SeguimientoPage from './pages/SeguimientoPage'
 import LoginPage from './pages/LoginPage'
 import RegistroPage from './pages/RegistroPage'
 import RecuperarContrasenaPage from './pages/RecuperarContrasenaPage'
+import MantenimientoPage from './pages/MantenimientoPage'
 import './App.css'
 
 function obtenerSeguimientoInicial() {
@@ -87,7 +88,8 @@ function App() {
   const ocultarHeader =
     location.pathname === '/login' ||
     location.pathname === '/registro' ||
-    location.pathname === '/recuperar'
+    location.pathname === '/recuperar' ||
+    location.pathname === '/mantenimiento'
 
   return (
     <>
@@ -134,6 +136,11 @@ function App() {
         <Route
           path="/recuperar"
           element={<RecuperarContrasenaPage />}
+        />
+
+        <Route
+          path="/mantenimiento"
+          element={<MantenimientoPage />}
         />
       </Routes>
     </>
