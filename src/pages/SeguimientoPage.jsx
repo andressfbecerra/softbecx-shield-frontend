@@ -1,13 +1,16 @@
 
 import { useEffect, useState } from 'react'
 import api from '../services/api'
+import useSeguimiento from '../context/useSeguimiento'
 import './Seguimiento.css'
 
-function SeguimientoPage({
-  idsSeguimiento,
-  onRetirarSeguimiento,
-  onVaciarSeguimiento
-}) {
+function SeguimientoPage() {
+  const {
+    idsSeguimiento,
+    retirarDelSeguimiento,
+    vaciarSeguimiento
+  } = useSeguimiento()
+
   const [incidentes, setIncidentes] = useState([])
   const [analisisRiesgo, setAnalisisRiesgo] = useState([])
   const [cargando, setCargando] = useState(true)
@@ -252,7 +255,7 @@ function SeguimientoPage({
                       type="button"
                       className="boton-retirar-seguimiento"
                       onClick={() =>
-                        onRetirarSeguimiento(incidente.idIncidente)
+                        retirarDelSeguimiento(incidente.idIncidente)
                       }
                     >
                       Retirar del seguimiento
@@ -265,7 +268,7 @@ function SeguimientoPage({
             <button
               type="button"
               className="boton-vaciar-seguimiento"
-              onClick={onVaciarSeguimiento}
+              onClick={vaciarSeguimiento}
             >
               Vaciar seguimiento
             </button>

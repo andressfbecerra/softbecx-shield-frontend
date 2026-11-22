@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import PanelPage from './pages/PanelPage'
@@ -11,40 +11,8 @@ import RecuperarContrasenaPage from './pages/RecuperarContrasenaPage'
 import MantenimientoPage from './pages/MantenimientoPage'
 import './App.css'
 
-function obtenerSeguimientoInicial() {
-  try {
-    const datosGuardados = localStorage.getItem('softbecx-seguimiento')
-
-    if (!datosGuardados) {
-      return []
-    }
-
-    const ids = JSON.parse(datosGuardados)
-
-    if (!Array.isArray(ids)) {
-      return []
-    }
-
-    return ids.filter((id) => Number.isInteger(id))
-  } catch (error) {
-    console.error('Error al recuperar el seguimiento:', error)
-    return []
-  }
-}
-
 function App() {
   const location = useLocation()
-
-  const [idsSeguimiento, setIdsSeguimiento] = useState(
-    obtenerSeguimientoInicial
-  )
-
-  useEffect(() => {
-    localStorage.setItem(
-      'softbecx-seguimiento',
-      JSON.stringify(idsSeguimiento)
-    )
-  }, [idsSeguimiento])
 
   useEffect(() => {
     if (!location.hash) {
@@ -65,26 +33,6 @@ function App() {
     }
   }, [location])
 
-  function agregarAlSeguimiento(idIncidente) {
-    setIdsSeguimiento((listaAnterior) => {
-      if (listaAnterior.includes(idIncidente)) {
-        return listaAnterior
-      }
-
-      return [...listaAnterior, idIncidente]
-    })
-  }
-
-  function retirarDelSeguimiento(idIncidente) {
-    setIdsSeguimiento((listaAnterior) =>
-      listaAnterior.filter((id) => id !== idIncidente)
-    )
-  }
-
-  function vaciarSeguimiento() {
-    setIdsSeguimiento([])
-  }
-
   const ocultarHeader =
     location.pathname === '/login' ||
     location.pathname === '/registro' ||
@@ -98,13 +46,7 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={
-            <PanelPage
-              idsSeguimiento={idsSeguimiento}
-              onAgregarSeguimiento={agregarAlSeguimiento}
-              onRetirarSeguimiento={retirarDelSeguimiento}
-            />
-          }
+          element={<PanelPage />}
         />
 
         <Route
@@ -114,13 +56,7 @@ function App() {
 
         <Route
           path="/seguimiento"
-          element={
-            <SeguimientoPage
-              idsSeguimiento={idsSeguimiento}
-              onRetirarSeguimiento={retirarDelSeguimiento}
-              onVaciarSeguimiento={vaciarSeguimiento}
-            />
-          }
+          element={<SeguimientoPage />}
         />
 
         <Route

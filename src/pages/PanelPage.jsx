@@ -2,12 +2,15 @@
 import { useState, useEffect } from 'react'
 import AlertaCard from '../components/AlertaCard'
 import api from '../services/api'
+import useSeguimiento from '../context/useSeguimiento'
 
-function PanelPage({
-  idsSeguimiento,
-  onAgregarSeguimiento,
-  onRetirarSeguimiento
-}) {
+function PanelPage() {
+  const {
+    idsSeguimiento,
+    agregarAlSeguimiento,
+    retirarDelSeguimiento
+  } = useSeguimiento()
+
   const [incidentes, setIncidentes] = useState([])
   const [analisisRiesgo, setAnalisisRiesgo] = useState([])
   const [cargando, setCargando] = useState(true)
@@ -107,7 +110,7 @@ function PanelPage({
       )
     )
 
-    onRetirarSeguimiento(idIncidente)
+    retirarDelSeguimiento(idIncidente)
   }
 
   function limpiarFiltros() {
@@ -347,7 +350,7 @@ function PanelPage({
                     }
                     onActualizarEstado={actualizarEstado}
                     onEliminarIncidente={eliminarIncidente}
-                    onAgregarSeguimiento={onAgregarSeguimiento}
+                    onAgregarSeguimiento={agregarAlSeguimiento}
                     enSeguimiento={idsSeguimiento.includes(
                       incidente.idIncidente
                     )}
