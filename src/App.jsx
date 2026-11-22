@@ -1,9 +1,12 @@
+
 import { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import PanelPage from './pages/PanelPage'
 import ReportarIncidentePage from './pages/ReportarIncidentePage'
 import SeguimientoPage from './pages/SeguimientoPage'
+import LoginPage from './pages/LoginPage'
+import RegistroPage from './pages/RegistroPage'
 import './App.css'
 
 function obtenerSeguimientoInicial() {
@@ -80,9 +83,13 @@ function App() {
     setIdsSeguimiento([])
   }
 
+  const ocultarHeader =
+    location.pathname === '/login' ||
+    location.pathname === '/registro'
+
   return (
     <>
-      <Header />
+      {!ocultarHeader && <Header />}
 
       <Routes>
         <Route
@@ -110,6 +117,16 @@ function App() {
               onVaciarSeguimiento={vaciarSeguimiento}
             />
           }
+        />
+
+        <Route
+          path="/login"
+          element={<LoginPage />}
+        />
+
+        <Route
+          path="/registro"
+          element={<RegistroPage />}
         />
       </Routes>
     </>

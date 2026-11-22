@@ -1,0 +1,314 @@
+
+/* ========================================
+   PÁGINA DE REGISTRO
+======================================== */
+
+.registro-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30px 18px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202124;
+  background-color: #202124;
+}
+
+.tarjeta-registro {
+  width: 100%;
+  max-width: 720px;
+  padding: 38px 42px;
+  background-color: #F5F5F5;
+  border-top: 6px solid #C62828;
+  border-radius: 16px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+/* ========================================
+   ENCABEZADO Y MARCA
+======================================== */
+
+.encabezado-registro {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.marca-registro {
+  display: inline-block;
+  margin-bottom: 25px;
+  color: #202124;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -0.7px;
+  text-decoration: none;
+}
+
+.marca-registro span {
+  color: #C62828;
+}
+
+.subtitulo-registro {
+  margin-bottom: 9px;
+  color: #C62828;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+}
+
+.encabezado-registro h1 {
+  margin-bottom: 10px;
+  color: #202124;
+  font-size: 32px;
+}
+
+.descripcion-registro {
+  margin-bottom: 0;
+  color: #66686C;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   FORMULARIO
+======================================== */
+
+.formulario-registro {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.grupo-campos-registro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.campo-registro label {
+  display: block;
+  margin-bottom: 8px;
+  color: #202124;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.campo-registro input,
+.campo-registro select {
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 13px;
+  color: #202124;
+  background-color: #FFFFFF;
+  border: 1px solid #D3D3D5;
+  border-radius: 7px;
+  font-size: 14px;
+}
+
+.campo-registro input::placeholder {
+  color: #858589;
+}
+
+.campo-registro input:focus,
+.campo-registro select:focus {
+  border: 2px solid #C62828;
+  outline: none;
+  box-shadow: none;
+}
+
+/* ========================================
+   TÉRMINOS Y CONDICIONES
+======================================== */
+
+.terminos-registro {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #55575B;
+  font-size: 13px;
+  line-height: 1.6;
+  cursor: pointer;
+}
+
+.terminos-registro input {
+  width: 16px;
+  height: 16px;
+  margin-top: 3px;
+  flex-shrink: 0;
+  accent-color: #C62828;
+}
+
+/* ========================================
+   BOTÓN DE REGISTRO
+======================================== */
+
+.boton-registro {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 20px;
+  color: #FFFFFF;
+  background-color: #C62828;
+  border: 2px solid #C62828;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.boton-registro:hover {
+  background-color: #A51F1F;
+  border-color: #A51F1F;
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   MENSAJES
+======================================== */
+
+.mensaje-registro {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.mensaje-registro.error {
+  color: #C62828;
+}
+
+.mensaje-registro.exito {
+  color: #26733D;
+}
+
+/* ========================================
+   SEPARADOR Y ENLACES
+======================================== */
+
+.separador-registro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 25px 0 20px;
+}
+
+.separador-registro span {
+  height: 1px;
+  flex: 1;
+  background-color: #D8D8D8;
+}
+
+.separador-registro p {
+  margin: 0;
+  color: #77797D;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.enlace-login-registro {
+  margin-bottom: 0;
+  color: #55575B;
+  text-align: center;
+  font-size: 14px;
+}
+
+.enlace-login-registro a {
+  color: #C62828;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.enlace-login-registro a:hover {
+  text-decoration: underline;
+}
+
+.volver-inicio-registro {
+  display: block;
+  margin-top: 20px;
+  color: #44464A;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.volver-inicio-registro:hover {
+  color: #C62828;
+}
+
+/* ========================================
+   NOTA INFORMATIVA
+======================================== */
+
+.nota-registro {
+  margin-top: 24px;
+  margin-bottom: 0;
+  color: #77797D;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   ACCESIBILIDAD
+======================================== */
+
+.registro-page a:focus-visible,
+.registro-page button:focus-visible {
+  outline: 3px solid #C62828;
+  outline-offset: 3px;
+}
+
+.terminos-registro input:focus-visible {
+  outline: 2px solid #C62828;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   DISEÑO ADAPTABLE
+======================================== */
+
+@media (max-width: 600px) {
+  .registro-page {
+    padding: 16px 12px;
+    align-items: flex-start;
+  }
+
+  .tarjeta-registro {
+    padding: 28px 20px;
+    border-radius: 13px;
+  }
+
+  .encabezado-registro {
+    margin-bottom: 25px;
+  }
+
+  .encabezado-registro h1 {
+    font-size: 27px;
+  }
+
+  .grupo-campos-registro {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .formulario-registro {
+    gap: 18px;
+  }
+
+  .campo-registro input,
+  .campo-registro select {
+    min-height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .registro-page *,
+  .registro-page *::before,
+  .registro-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
