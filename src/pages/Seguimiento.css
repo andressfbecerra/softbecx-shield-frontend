@@ -1,0 +1,203 @@
+
+/* ========================================
+   SEGUIMIENTO DE INCIDENTES
+======================================== */
+
+.seccion-seguimiento {
+  margin: 0 0 45px;
+  padding: 25px;
+  background: #FFFFFF;
+  border: 1px solid #DADADA;
+  border-left: 5px solid #C62828;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.encabezado-seguimiento {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.encabezado-seguimiento h2 {
+  margin: 0 0 8px;
+  color: #202124;
+  font-size: 23px;
+}
+
+.encabezado-seguimiento p {
+  margin: 0;
+  color: #666666;
+  font-size: 14px;
+}
+
+.contador-seguimiento {
+  padding: 9px 14px;
+  background: #E5F5E9;
+  color: #187A35;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.mensaje-seguimiento-vacio {
+  margin: 0;
+  padding: 20px;
+  background: #F5F5F5;
+  color: #666666;
+  border-radius: 7px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.lista-seguimiento {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.elemento-seguimiento {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 17px;
+  background: #F5F5F5;
+  border: 1px solid #E5E5E5;
+  border-radius: 8px;
+}
+
+.informacion-seguimiento {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.informacion-seguimiento h3 {
+  margin: 0 0 10px;
+  color: #202124;
+  font-size: 16px;
+  overflow-wrap: anywhere;
+}
+
+.informacion-seguimiento p {
+  margin: 8px 0;
+  color: #555555;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.informacion-seguimiento strong {
+  color: #202124;
+}
+
+.boton-retirar-seguimiento,
+.boton-vaciar-seguimiento {
+  min-height: 40px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.boton-retirar-seguimiento {
+  flex-shrink: 0;
+  background: #202124;
+  color: #FFFFFF;
+}
+
+.boton-retirar-seguimiento:hover {
+  background: #C62828;
+}
+
+.boton-vaciar-seguimiento {
+  display: block;
+  margin: 18px 0 0 auto;
+  background: #C62828;
+  color: #FFFFFF;
+}
+
+.boton-vaciar-seguimiento:hover {
+  background: #A61F1F;
+}
+
+/* BOTÓN PARA AGREGAR INCIDENTES */
+
+.boton-seguimiento {
+  width: 100%;
+  min-height: 42px;
+  margin-top: 12px;
+  padding: 10px 16px;
+  background: #202124;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.boton-seguimiento:hover:not(:disabled) {
+  background: #C62828;
+}
+
+.boton-seguimiento:disabled {
+  background: #858585;
+  color: #FFFFFF;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* ESTADO CONFIRMADO: VERDE CLARO Y TEXTO GRAFITO */
+
+.boton-seguimiento.agregado:disabled {
+  background: #E5F5E9;
+  color: #202124;
+  opacity: 1;
+  cursor: default;
+}
+
+/* ACCESIBILIDAD */
+
+.boton-retirar-seguimiento:focus-visible,
+.boton-vaciar-seguimiento:focus-visible,
+.boton-seguimiento:focus-visible {
+  outline: 3px solid #C62828;
+  outline-offset: 3px;
+}
+
+/* ========================================
+   DISEÑO ADAPTABLE
+======================================== */
+
+@media (max-width: 768px) {
+  .seccion-seguimiento {
+    padding: 18px;
+  }
+
+  .encabezado-seguimiento {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .elemento-seguimiento {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .boton-retirar-seguimiento {
+    width: 100%;
+  }
+
+  .boton-vaciar-seguimiento {
+    width: 100%;
+  }
+}

@@ -1,9 +1,12 @@
-
 import { useState, useEffect } from 'react'
 import AlertaCard from '../components/AlertaCard'
 import api from '../services/api'
 
-function PanelPage() {
+function PanelPage({
+  idsSeguimiento,
+  onAgregarSeguimiento,
+  onRetirarSeguimiento
+}) {
   const [incidentes, setIncidentes] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
@@ -69,6 +72,8 @@ function PanelPage() {
         (incidente) => incidente.idIncidente !== idIncidente
       )
     )
+
+    onRetirarSeguimiento(idIncidente)
   }
 
   function limpiarFiltros() {
@@ -244,6 +249,10 @@ function PanelPage() {
                     incidente={incidente}
                     onActualizarEstado={actualizarEstado}
                     onEliminarIncidente={eliminarIncidente}
+                    onAgregarSeguimiento={onAgregarSeguimiento}
+                    enSeguimiento={idsSeguimiento.includes(
+                      incidente.idIncidente
+                    )}
                   />
                 ))}
               </div>

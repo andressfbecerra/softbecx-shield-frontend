@@ -4,7 +4,9 @@ import { useState } from 'react'
 function AlertaCard({
   incidente,
   onActualizarEstado,
-  onEliminarIncidente
+  onEliminarIncidente,
+  onAgregarSeguimiento,
+  enSeguimiento
 }) {
   const [mostrarDetalles, setMostrarDetalles] = useState(false)
 
@@ -150,6 +152,17 @@ function AlertaCard({
           </p>
         </div>
       )}
+
+      <button
+        type="button"
+        className={`boton-seguimiento ${enSeguimiento ? 'agregado' : ''}`}
+        onClick={() => onAgregarSeguimiento(incidente.idIncidente)}
+        disabled={enSeguimiento || guardando || eliminando}
+      >
+        {enSeguimiento
+          ? 'Agregado al seguimiento'
+          : 'Agregar al seguimiento'}
+      </button>
 
       <div className="campo-formulario">
         <label htmlFor={`estado-${incidente.idIncidente}`}>
