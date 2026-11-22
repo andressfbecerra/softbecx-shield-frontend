@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import PanelPage from './pages/PanelPage'
+import AlertasPage from './pages/AlertasPage'
 import ReportarIncidentePage from './pages/ReportarIncidentePage'
 import SeguimientoPage from './pages/SeguimientoPage'
 import LoginPage from './pages/LoginPage'
@@ -47,6 +48,11 @@ function App() {
         <Route
           path="/"
           element={<PanelPage />}
+        />
+
+        <Route
+          path="/alertas"
+          element={<AlertasPage />}
         />
 
         <Route

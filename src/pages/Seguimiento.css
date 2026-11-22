@@ -1,5 +1,81 @@
 
 /* ========================================
+   BIENVENIDA - SEGUIMIENTO
+======================================== */
+
+.bienvenida {
+  margin-bottom: 30px;
+}
+
+.bienvenida .texto-superior {
+  margin: 0 0 10px;
+  color: #C62828;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.bienvenida h1 {
+  margin: 0 0 12px;
+  color: #202124;
+  font-size: 34px;
+  line-height: 1.2;
+}
+
+.bienvenida > p:last-child {
+  margin: 0;
+  color: #666666;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   RESUMEN DE INCIDENTES
+======================================== */
+
+.resumen-incidentes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 30px;
+}
+
+.resumen-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  min-height: 125px;
+  padding: 22px;
+  background: #FFFFFF;
+  border: 1px solid #C62828;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.resumen-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.09);
+}
+
+.resumen-card span {
+  margin-bottom: 12px;
+  color: #666666;
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.5;
+}
+
+.resumen-card strong {
+  color: #202124;
+  font-size: 34px;
+  line-height: 1.1;
+}
+
+/* ========================================
    SEGUIMIENTO DE INCIDENTES
 ======================================== */
 
@@ -7,8 +83,7 @@
   margin: 0 0 45px;
   padding: 25px;
   background: #FFFFFF;
-  border: 1px solid #DADADA;
-  border-left: 5px solid #C62828;
+  border: none;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -66,7 +141,7 @@
   gap: 18px;
   padding: 17px;
   background: #F5F5F5;
-  border: 1px solid #E5E5E5;
+  border: 1px solid #202124;
   border-radius: 8px;
 }
 
@@ -92,6 +167,10 @@
 .informacion-seguimiento strong {
   color: #202124;
 }
+
+/* ========================================
+   BOTONES DE SEGUIMIENTO
+======================================== */
 
 .boton-retirar-seguimiento,
 .boton-vaciar-seguimiento {
@@ -127,7 +206,9 @@
   background: #A61F1F;
 }
 
-/* BOTÓN PARA AGREGAR INCIDENTES */
+/* ========================================
+   BOTÓN PARA AGREGAR INCIDENTES
+======================================== */
 
 .boton-seguimiento {
   width: 100%;
@@ -156,7 +237,7 @@
   opacity: 0.8;
 }
 
-/* ESTADO CONFIRMADO: VERDE CLARO Y TEXTO GRAFITO */
+/* ESTADO CONFIRMADO */
 
 .boton-seguimiento.agregado:disabled {
   background: #E5F5E9;
@@ -165,7 +246,9 @@
   cursor: default;
 }
 
-/* ACCESIBILIDAD */
+/* ========================================
+   ACCESIBILIDAD
+======================================== */
 
 .boton-retirar-seguimiento:focus-visible,
 .boton-vaciar-seguimiento:focus-visible,
@@ -179,6 +262,20 @@
 ======================================== */
 
 @media (max-width: 768px) {
+  .bienvenida h1 {
+    font-size: 29px;
+  }
+
+  .resumen-incidentes {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .resumen-card {
+    min-height: 110px;
+    padding: 20px;
+  }
+
   .seccion-seguimiento {
     padding: 18px;
   }
@@ -199,5 +296,31 @@
 
   .boton-vaciar-seguimiento {
     width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .bienvenida h1 {
+    font-size: 26px;
+  }
+
+  .bienvenida > p:last-child {
+    font-size: 14px;
+  }
+
+  .resumen-card {
+    padding: 18px;
+  }
+
+  .resumen-card strong {
+    font-size: 30px;
+  }
+
+  .resumen-card span {
+    font-size: 12px;
+  }
+
+  .encabezado-seguimiento h2 {
+    font-size: 21px;
   }
 }

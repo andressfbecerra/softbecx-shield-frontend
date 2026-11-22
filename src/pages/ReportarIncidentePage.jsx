@@ -61,19 +61,14 @@ function ReportarIncidentePage() {
 
         <p>
           Ayúdanos a identificar posibles amenazas digitales.
-          Completa el formulario con la información del incidente.
         </p>
       </div>
 
       <section className="tarjeta-reporte">
         <div className="encabezado-formulario">
-          <div className="simbolo-reporte" aria-hidden="true">
-            !
-          </div>
-
           <div>
             <h3>Información del incidente</h3>
-            <p>Completa todos los campos obligatorios.</p>
+            <p>Cuanta más información proporciones, más preciso será el análisis y la identificación del incidente.</p>
           </div>
         </div>
 
@@ -164,10 +159,6 @@ function ReportarIncidentePage() {
             {enviando ? 'Enviando reporte...' : 'Enviar reporte'}
           </button>
 
-          <p className="nota-formulario">
-            Todos los campos son obligatorios.
-          </p>
-
           {mensajeExito && (
             <p className="mensaje-exito" role="status">
               {mensajeExito}
@@ -181,16 +172,6 @@ function ReportarIncidentePage() {
           )}
         </form>
       </section>
-
-      <div className="aviso-seguridad">
-        <span aria-hidden="true">!</span>
-
-        <p>
-          <strong>Recomendación de seguridad:</strong>{' '}
-          nunca compartas contraseñas, códigos de verificación
-          ni información bancaria confidencial en tus reportes.
-        </p>
-      </div>
     </main>
   )
 }
