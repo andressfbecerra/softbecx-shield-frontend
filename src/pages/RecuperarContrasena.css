@@ -1,0 +1,342 @@
+
+/* ========================================
+   PÁGINA DE RECUPERACIÓN
+======================================== */
+
+.pagina-recuperacion {
+  width: 100%;
+  min-height: 100vh;
+  color: #202124;
+  background-color: #F5F5F5;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.encabezado-recuperacion {
+  width: 100%;
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  background-color: #202124;
+}
+
+.contenedor-header-recuperacion {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo-recuperacion {
+  color: #FFFFFF;
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+}
+
+.logo-recuperacion span {
+  color: #C62828;
+}
+
+.enlace-inicio-recuperacion {
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.enlace-inicio-recuperacion:hover {
+  color: #FF3838;
+}
+
+/* ========================================
+   CONTENIDO PRINCIPAL
+======================================== */
+
+.contenido-recuperacion {
+  width: 100%;
+  min-height: calc(100vh - 76px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 45px 20px;
+}
+
+.contenedor-recuperacion {
+  width: 100%;
+  max-width: 850px;
+}
+
+/* ========================================
+   INTRODUCCIÓN
+======================================== */
+
+.introduccion-recuperacion {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.introduccion-recuperacion h1 {
+  margin-bottom: 12px;
+  color: #202124;
+  font-size: 32px;
+  line-height: 1.3;
+}
+
+.introduccion-recuperacion p {
+  max-width: 580px;
+  margin: 0 auto;
+  color: #66686C;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   TARJETA
+======================================== */
+
+.tarjeta-recuperacion {
+  width: 100%;
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 35px 42px;
+  background-color: #FFFFFF;
+  border-top: 5px solid #C62828;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.09);
+  text-align: center;
+}
+
+/* ========================================
+   IMAGEN
+======================================== */
+
+.imagen-recuperacion {
+  width: 100%;
+  height: 145px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.imagen-recuperacion img {
+  max-width: 180px;
+  max-height: 145px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* ========================================
+   TEXTO DE LA TARJETA
+======================================== */
+
+.tarjeta-recuperacion h2 {
+  margin-bottom: 12px;
+  color: #202124;
+  font-size: 25px;
+}
+
+.descripcion-recuperacion {
+  margin-bottom: 25px;
+  color: #66686C;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   FORMULARIO
+======================================== */
+
+#formulario-recuperacion {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  text-align: left;
+}
+
+.grupo-campo-recuperacion label {
+  display: block;
+  margin-bottom: 9px;
+  color: #202124;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.grupo-campo-recuperacion input {
+  width: 100%;
+  min-height: 52px;
+  padding: 13px 15px;
+  color: #202124;
+  background-color: #FFFFFF;
+  border: 1px solid #D3D3D5;
+  border-radius: 8px;
+  font-size: 15px;
+}
+
+.grupo-campo-recuperacion input::placeholder {
+  color: #858589;
+}
+
+.grupo-campo-recuperacion input:focus {
+  border: 2px solid #C62828;
+  outline: none;
+  box-shadow: none;
+}
+
+.ayuda-campo-recuperacion {
+  display: block;
+  margin-top: 9px;
+  color: #77797D;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   BOTÓN
+======================================== */
+
+.boton-recuperacion {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 20px;
+  color: #FFFFFF;
+  background-color: #C62828;
+  border: 2px solid #C62828;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.boton-recuperacion:hover {
+  background-color: #A51F1F;
+  border-color: #A51F1F;
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   MENSAJE
+======================================== */
+
+.mensaje-recuperacion {
+  margin-top: 20px;
+  margin-bottom: 0;
+  padding: 12px;
+  color: #26733D;
+  background-color: #E5F4E9;
+  border: 1px solid #B7DCC1;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   ENLACE DE REGRESO
+======================================== */
+
+.volver-recuperacion {
+  display: inline-block;
+  margin-top: 25px;
+  color: #C62828;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.volver-recuperacion:hover {
+  color: #A51F1F;
+  text-decoration: underline;
+}
+
+/* ========================================
+   ACCESIBILIDAD
+======================================== */
+
+.pagina-recuperacion a:focus-visible,
+.pagina-recuperacion button:focus-visible {
+  outline: 3px solid #C62828;
+  outline-offset: 3px;
+}
+
+/* ========================================
+   DISEÑO ADAPTABLE
+======================================== */
+
+@media (max-width: 600px) {
+  .contenedor-header-recuperacion {
+    padding: 15px 18px;
+  }
+
+  .logo-recuperacion {
+    font-size: 18px;
+  }
+
+  .contenido-recuperacion {
+    min-height: calc(100vh - 76px);
+    align-items: flex-start;
+    padding: 35px 15px;
+  }
+
+  .introduccion-recuperacion h1 {
+    font-size: 26px;
+  }
+
+  .introduccion-recuperacion p {
+    font-size: 14px;
+  }
+
+  .tarjeta-recuperacion {
+    padding: 28px 22px;
+  }
+
+  .imagen-recuperacion {
+    height: 120px;
+  }
+
+  .imagen-recuperacion img {
+    max-width: 150px;
+    max-height: 120px;
+  }
+
+  .tarjeta-recuperacion h2 {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 360px) {
+  .contenedor-header-recuperacion {
+    padding: 14px 12px;
+  }
+
+  .logo-recuperacion {
+    font-size: 16px;
+  }
+
+  .enlace-inicio-recuperacion {
+    font-size: 12px;
+  }
+
+  .tarjeta-recuperacion {
+    padding: 25px 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagina-recuperacion *,
+  .pagina-recuperacion *::before,
+  .pagina-recuperacion *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
