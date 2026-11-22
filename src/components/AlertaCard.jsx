@@ -3,6 +3,7 @@ import { useState } from 'react'
 
 function AlertaCard({
   incidente,
+  analisisRiesgo,
   onActualizarEstado,
   onEliminarIncidente,
   onAgregarSeguimiento,
@@ -87,6 +88,9 @@ function AlertaCard({
     }
   }
 
+  const nivelRiesgo = analisisRiesgo?.nivelRiesgo
+  const puntajeRiesgo = analisisRiesgo?.puntajeRiesgo
+
   return (
     <article className="card-incidente">
       <div className="card-incidente-superior">
@@ -106,6 +110,20 @@ function AlertaCard({
       </p>
 
       <div className="datos-incidente">
+        <p>
+          <strong>Nivel de riesgo:</strong>{' '}
+          {nivelRiesgo
+            ? nivelRiesgo.replace('_', ' ')
+            : 'Pendiente de análisis'}
+        </p>
+
+        <p>
+          <strong>Puntaje de riesgo:</strong>{' '}
+          {puntajeRiesgo != null
+            ? `${Number(puntajeRiesgo).toLocaleString('es-CO')} puntos`
+            : 'No disponible'}
+        </p>
+
         <p>
           <strong>Origen:</strong> {incidente.origen}
         </p>
@@ -150,6 +168,34 @@ function AlertaCard({
             <strong>Correo del usuario:</strong>{' '}
             {incidente.correoUsuario || 'No disponible'}
           </p>
+
+          {analisisRiesgo && (
+            <>
+              <p>
+                <strong>ID del análisis:</strong>{' '}
+                {analisisRiesgo.idAnalisis}
+              </p>
+
+              <p>
+                <strong>Método de análisis:</strong>{' '}
+                {analisisRiesgo.metodoAnalisis || 'No disponible'}
+              </p>
+
+              <p>
+                <strong>Explicación del riesgo:</strong>{' '}
+                {analisisRiesgo.explicacion || 'No disponible'}
+              </p>
+
+              <p>
+                <strong>Fecha del análisis:</strong>{' '}
+                {analisisRiesgo.fechaAnalisis
+                  ? new Date(
+                      analisisRiesgo.fechaAnalisis
+                    ).toLocaleString('es-CO')
+                  : 'No disponible'}
+              </p>
+            </>
+          )}
         </div>
       )}
 

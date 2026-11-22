@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react'
 import AlertaCard from '../components/AlertaCard'
 import api from '../services/api'
@@ -8,20 +9,47 @@ function PanelPage({
   onRetirarSeguimiento
 }) {
   const [incidentes, setIncidentes] = useState([])
+  const [analisisRiesgo, setAnalisisRiesgo] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
+  const [errorAnalisis, setErrorAnalisis] = useState('')
   const [filtroTipo, setFiltroTipo] = useState('')
   const [filtroEstado, setFiltroEstado] = useState('')
+  const [filtroNivelRiesgo, setFiltroNivelRiesgo] = useState('')
 
   useEffect(() => {
-    async function obtenerIncidentes() {
+    async function obtenerDatos() {
       try {
-        const respuesta = await api.get('/incidentes')
+        const resultados = await Promise.allSettled([
+          api.get('/incidentes'),
+          api.get('/analisis-riesgo')
+        ])
 
-        setIncidentes(respuesta.data)
-        setError('')
+        const resultadoIncidentes = resultados[0]
+        const resultadoAnalisis = resultados[1]
+
+        if (resultadoIncidentes.status === 'fulfilled') {
+          setIncidentes(resultadoIncidentes.value.data)
+          setError('')
+        } else {
+          throw resultadoIncidentes.reason
+        }
+
+        if (resultadoAnalisis.status === 'fulfilled') {
+          setAnalisisRiesgo(resultadoAnalisis.value.data)
+          setErrorAnalisis('')
+        } else {
+          console.error(
+            'Error al consultar los análisis de riesgo:',
+            resultadoAnalisis.reason
+          )
+
+          setErrorAnalisis(
+            'No fue posible cargar los análisis de riesgo. Los incidentes seguirán disponibles, pero sus niveles y puntajes podrían no mostrarse.'
+          )
+        }
       } catch (error) {
-        console.error('Error al consultar incidentes:', error)
+        console.error('Error al consultar los datos:', error)
 
         setError(
           'No se pudieron cargar los incidentes. Comprueba que el servidor esté funcionando.'
@@ -31,7 +59,7 @@ function PanelPage({
       }
     }
 
-    obtenerIncidentes()
+    obtenerDatos()
   }, [])
 
   async function actualizarEstado(incidente, nuevoEstado) {
@@ -73,21 +101,48 @@ function PanelPage({
       )
     )
 
+    setAnalisisRiesgo((listaAnterior) =>
+      listaAnterior.filter(
+        (analisis) => analisis.idIncidente !== idIncidente
+      )
+    )
+
     onRetirarSeguimiento(idIncidente)
   }
 
   function limpiarFiltros() {
     setFiltroTipo('')
     setFiltroEstado('')
+    setFiltroNivelRiesgo('')
   }
 
   function formatearEtiqueta(valor) {
-    return valor
+    return (valor || 'Sin información')
       .toLowerCase()
       .replaceAll('_', ' ')
       .replace(/^./, (letra) => letra.toUpperCase())
       .replace('revision', 'revisión')
   }
+
+  const analisisPorIncidente = {}
+
+  analisisRiesgo.forEach((analisis) => {
+    const idIncidente = analisis.idIncidente
+
+    if (idIncidente == null) {
+      return
+    }
+
+    const analisisActual = analisisPorIncidente[idIncidente]
+
+    if (
+      !analisisActual ||
+      new Date(analisis.fechaAnalisis || 0) >
+        new Date(analisisActual.fechaAnalisis || 0)
+    ) {
+      analisisPorIncidente[idIncidente] = analisis
+    }
+  })
 
   const tiposDisponibles = [
     ...new Set(
@@ -105,14 +160,22 @@ function PanelPage({
     )
   ].sort()
 
+  const nivelesRiesgo = ['ALTO', 'MEDIO', 'BAJO']
+
   const incidentesFiltrados = incidentes.filter((incidente) => {
+    const analisis = analisisPorIncidente[incidente.idIncidente]
+
     const coincideTipo =
       filtroTipo === '' || incidente.tipoIncidente === filtroTipo
 
     const coincideEstado =
       filtroEstado === '' || incidente.estado === filtroEstado
 
-    return coincideTipo && coincideEstado
+    const coincideNivelRiesgo =
+      filtroNivelRiesgo === '' ||
+      analisis?.nivelRiesgo === filtroNivelRiesgo
+
+    return coincideTipo && coincideEstado && coincideNivelRiesgo
   })
 
   const totalIncidentes = incidentes.length
@@ -174,6 +237,12 @@ function PanelPage({
           </p>
         )}
 
+        {!cargando && !error && errorAnalisis && (
+          <p className="mensaje-error" role="status">
+            {errorAnalisis}
+          </p>
+        )}
+
         {!cargando && !error && incidentes.length === 0 && (
           <p className="mensaje-estado">
             Todavía no hay incidentes registrados.
@@ -223,11 +292,37 @@ function PanelPage({
                 </select>
               </div>
 
+              <div className="campo-filtro">
+                <label htmlFor="filtro-nivel-riesgo">
+                  Filtrar por nivel de riesgo
+                </label>
+
+                <select
+                  id="filtro-nivel-riesgo"
+                  value={filtroNivelRiesgo}
+                  onChange={(evento) =>
+                    setFiltroNivelRiesgo(evento.target.value)
+                  }
+                >
+                  <option value="">Todos los niveles</option>
+
+                  {nivelesRiesgo.map((nivel) => (
+                    <option key={nivel} value={nivel}>
+                      {formatearEtiqueta(nivel)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <button
                 type="button"
                 className="boton-limpiar-filtros"
                 onClick={limpiarFiltros}
-                disabled={!filtroTipo && !filtroEstado}
+                disabled={
+                  !filtroTipo &&
+                  !filtroEstado &&
+                  !filtroNivelRiesgo
+                }
               >
                 Limpiar filtros
               </button>
@@ -247,6 +342,9 @@ function PanelPage({
                   <AlertaCard
                     key={incidente.idIncidente}
                     incidente={incidente}
+                    analisisRiesgo={
+                      analisisPorIncidente[incidente.idIncidente] || null
+                    }
                     onActualizarEstado={actualizarEstado}
                     onEliminarIncidente={eliminarIncidente}
                     onAgregarSeguimiento={onAgregarSeguimiento}
