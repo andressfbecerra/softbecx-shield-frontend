@@ -1,0 +1,388 @@
+
+/* ========================================
+   PÁGINA DE INICIO DE SESIÓN
+======================================== */
+
+.login-page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #202124;
+  background-color: #202124;
+}
+
+.tarjeta-login {
+  width: 100%;
+  max-width: 550px;
+  padding: 38px 48px 42px;
+  background-color: #F5F5F5;
+  border-top: 6px solid #C62828;
+  border-radius: 17px;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+}
+
+/* ========================================
+   MARCA SOFTBECX SHIELD
+======================================== */
+
+.marca-login {
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 30px;
+  white-space: nowrap;
+}
+
+.marca-login h2,
+.marca-login p {
+  margin: 0;
+  font-size: 39px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+}
+
+.marca-login h2 {
+  color: #202124;
+}
+
+.marca-login p {
+  color: #C62828;
+}
+
+/* ========================================
+   ENCABEZADO
+======================================== */
+
+.encabezado-tarjeta {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.subtitulo {
+  margin-bottom: 8px;
+  color: #C62828;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
+
+.encabezado-tarjeta h1 {
+  margin-bottom: 10px;
+  color: #202124;
+  font-size: 36px;
+  line-height: 1.25;
+}
+
+.texto-tarjeta {
+  margin-bottom: 0;
+  color: #66686C;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   FORMULARIO
+======================================== */
+
+.formulario-login {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.campo-login label {
+  display: block;
+  margin-bottom: 9px;
+  color: #202124;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.campo-login input {
+  display: block;
+  width: 100%;
+  min-height: 58px;
+  padding: 15px 17px;
+  color: #202124;
+  background-color: #FFFFFF;
+  border: 1px solid #D3D3D5;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.2s;
+}
+
+.campo-login input::placeholder {
+  color: #77797D;
+}
+
+.campo-login input:focus {
+  border: 2px solid #C62828;
+  outline: none;
+  box-shadow: none;
+}
+
+/* ========================================
+   OPCIONES
+======================================== */
+
+.opciones-login {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 1px;
+}
+
+.recordar-login {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: #55575B;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.recordar-login input {
+  width: 17px;
+  height: 17px;
+  accent-color: #C62828;
+  cursor: pointer;
+}
+
+.enlace-login {
+  color: #C62828;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.enlace-login:hover {
+  color: #A51F1F;
+  text-decoration: underline;
+}
+
+/* ========================================
+   BOTÓN
+======================================== */
+
+.boton-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 62px;
+  margin-top: 2px;
+  padding: 16px 22px;
+  color: #FFFFFF;
+  background-color: #C62828;
+  border: 2px solid #C62828;
+  border-radius: 9px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.boton-login:hover {
+  background-color: #A51F1F;
+  border-color: #A51F1F;
+  transform: translateY(-1px);
+}
+
+/* ========================================
+   MENSAJES
+======================================== */
+
+.mensaje-login {
+  padding: 12px;
+  margin: 0;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.mensaje-login.error {
+  color: #A51F1F;
+  background-color: #FCE8E8;
+  border: 1px solid #E8B5B5;
+}
+
+.mensaje-login.exito {
+  color: #216B38;
+  background-color: #E5F4E9;
+  border: 1px solid #B7DCC1;
+}
+
+/* ========================================
+   ENLACES INFERIORES
+======================================== */
+
+.separador-login {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 30px 0 22px;
+}
+
+.separador-login span {
+  height: 1px;
+  flex: 1;
+  background-color: #D8D8D8;
+}
+
+.separador-login p {
+  margin: 0;
+  color: #77797D;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  white-space: nowrap;
+}
+
+.registro-login {
+  margin-bottom: 23px;
+  color: #55575B;
+  text-align: center;
+  font-size: 15px;
+}
+
+.volver-login {
+  display: block;
+  color: #44464A;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.volver-login:hover {
+  color: #C62828;
+}
+
+.nota-login {
+  margin-top: 25px;
+  margin-bottom: 0;
+  color: #77797D;
+  text-align: center;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* ========================================
+   ACCESIBILIDAD
+======================================== */
+
+.login-page a:focus-visible,
+.login-page button:focus-visible {
+  outline: 3px solid #C62828;
+  outline-offset: 3px;
+}
+
+.recordar-login input:focus-visible {
+  outline: 2px solid #C62828;
+  outline-offset: 2px;
+}
+
+/* ========================================
+   DISEÑO ADAPTABLE
+======================================== */
+
+@media (max-width: 600px) {
+  .login-page {
+    padding: 16px;
+  }
+
+  .tarjeta-login {
+    max-width: 440px;
+    padding: 30px 24px 32px;
+    border-radius: 14px;
+  }
+
+  .marca-login {
+    gap: 9px;
+    margin-bottom: 25px;
+  }
+
+  .marca-login h2,
+  .marca-login p {
+    font-size: 32px;
+  }
+
+  .encabezado-tarjeta {
+    margin-bottom: 25px;
+  }
+
+  .encabezado-tarjeta h1 {
+    font-size: 30px;
+  }
+
+  .texto-tarjeta {
+    font-size: 14px;
+  }
+
+  .formulario-login {
+    gap: 19px;
+  }
+
+  .campo-login input {
+    min-height: 52px;
+    font-size: 15px;
+  }
+
+  .boton-login {
+    min-height: 56px;
+  }
+
+  .separador-login {
+    margin: 25px 0 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .tarjeta-login {
+    padding: 26px 18px;
+  }
+
+  .marca-login {
+    gap: 7px;
+  }
+
+  .marca-login h2,
+  .marca-login p {
+    font-size: 27px;
+  }
+
+  .opciones-login {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+}
+
+@media (max-height: 700px) {
+  .login-page {
+    align-items: flex-start;
+  }
+
+  .tarjeta-login {
+    margin: 10px 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .login-page *,
+  .login-page *::before,
+  .login-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

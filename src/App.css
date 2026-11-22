@@ -395,12 +395,14 @@
   color: #858585;
 }
 
+/* UN SOLO MARCO ROJO AL SELECCIONAR UN CAMPO */
+
 .campo-formulario input:focus,
 .campo-formulario select:focus,
 .campo-formulario textarea:focus {
-  outline: 2px solid #C62828;
-  outline-offset: 1px;
-  border-color: #C62828;
+  border: 2px solid #C62828;
+  outline: none;
+  box-shadow: none;
 }
 
 .campo-formulario small {
@@ -580,10 +582,12 @@
   cursor: pointer;
 }
 
+/* UN SOLO MARCO ROJO EN LOS FILTROS */
+
 .campo-filtro select:focus {
-  outline: 2px solid #C62828;
-  outline-offset: 1px;
-  border-color: #C62828;
+  border: 2px solid #C62828;
+  outline: none;
+  box-shadow: none;
 }
 
 .boton-limpiar-filtros {
