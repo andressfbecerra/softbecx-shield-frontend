@@ -297,8 +297,6 @@
     border-color 0.25s ease;
 }
 
-/* CAPA OSCURA PARA FACILITAR LA LECTURA */
-
 .panel-indicador::before {
   position: absolute;
   z-index: -1;
@@ -328,8 +326,6 @@
   );
 }
 
-/* IMAGEN INDEPENDIENTE PARA CADA INDICADOR */
-
 .panel-indicador-total {
   background-image: url('/img/panel/total-incidentes.png');
 }
@@ -341,8 +337,6 @@
 .panel-indicador-revision {
   background-image: url('/img/panel/incidentes-revision.png');
 }
-
-/* CONTENIDO DE CADA TARJETA */
 
 .panel-indicador-contenido {
   position: relative;
@@ -694,8 +688,6 @@
   color: #858585;
 }
 
-/* UN SOLO MARCO ROJO AL SELECCIONAR UN CAMPO */
-
 .campo-formulario input:focus,
 .campo-formulario select:focus,
 .campo-formulario textarea:focus {
@@ -821,8 +813,6 @@
 .campo-filtro input::placeholder {
   color: #858585;
 }
-
-/* UN SOLO MARCO ROJO EN LOS FILTROS */
 
 .campo-filtro select:focus,
 .campo-filtro input:focus {
@@ -1070,8 +1060,6 @@
   opacity: 0.7;
 }
 
-/* BOTÓN DETALLES: AZUL GRAFITO */
-
 .boton-accion.boton-detalles-tabla {
   background: #263B59;
 }
@@ -1079,8 +1067,6 @@
 .boton-accion.boton-detalles-tabla:hover:not(:disabled) {
   background: #1B2B42;
 }
-
-/* BOTÓN SEGUIR: VERDE GRAFITO */
 
 .boton-accion.boton-seguir:not(.accion-agregada) {
   background: #183D32;
@@ -1090,8 +1076,6 @@
   background: #102C24;
 }
 
-/* BOTÓN ELIMINAR: ROJO */
-
 .boton-accion.boton-eliminar {
   background: #C62828;
 }
@@ -1099,8 +1083,6 @@
 .boton-accion.boton-eliminar:hover:not(:disabled) {
   background: #A61F1F;
 }
-
-/* INCIDENTE YA AGREGADO AL SEGUIMIENTO */
 
 .boton-accion.accion-agregada {
   background: #EAF7ED;
@@ -1120,41 +1102,127 @@
 
 .fila-detalles td {
   padding: 0;
-  background: #F8F8F8;
+  background: #F5F5F5;
   border-bottom: 1px solid #DADADA;
 }
 
 .contenido-detalles {
-  padding: 24px;
-  border-left: 4px solid #C62828;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  padding: 26px;
 }
 
-.contenido-detalles h3 {
-  margin: 0 0 18px;
-  color: #202124;
-  font-size: 17px;
+/* ========================================
+   TABLAS DE INFORMACIÓN DETALLADA
+======================================== */
+
+.seccion-tabla-detalle {
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  background: #FFFFFF;
+  border: 1px solid #202124;
+  border-radius: 8px;
 }
 
-.detalles-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px 24px;
-}
-
-.detalles-grid p {
+.seccion-tabla-detalle h3 {
   margin: 0;
+  padding: 8px 18px;
+  color: #FFFFFF;
+  background: #202124;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.tabla-detalle {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  background: #FFFFFF;
+  text-align: left;
+}
+
+.tabla-detalle thead {
+  background: #F0F0F0;
+}
+
+.tabla-detalle th {
+  padding: 12px 16px;
+  color: #202124;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  border-bottom: 1px solid #DADADA;
+}
+
+.tabla-detalle th:first-child,
+.tabla-detalle td:first-child {
+  width: 30%;
+}
+
+.tabla-detalle td {
+  padding: 13px 16px;
   color: #55585C;
   font-size: 13px;
   line-height: 1.6;
+  vertical-align: top;
+  border-bottom: 1px solid #E5E5E5;
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
-.detalles-grid strong {
+.tabla-detalle tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-detalle tbody tr:hover {
+  background: #FAFAFA;
+}
+
+.tabla-detalle td:first-child {
   color: #202124;
+  font-weight: bold;
 }
 
-.detalles-grid .detalle-completo {
-  grid-column: 1 / -1;
+.tabla-detalle td strong {
+  display: block;
+  margin-bottom: 5px;
+  color: #202124;
+  font-size: 13px;
+}
+
+.detalle-prioridad {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 9px;
+  color: #A61F1F;
+  background: #FCE8E8;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.descripcion-tabla-recomendacion {
+  margin: 0 0 7px;
+  color: #55585C;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.identificador-recomendacion {
+  color: #777777;
+  font-size: 11px;
+}
+
+.mensaje-tabla-detalle {
+  margin: 0;
+  padding: 18px;
+  color: #666666;
+  background: #FFFFFF;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 /* ========================================
@@ -1166,7 +1234,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 22px;
+  margin-top: 2px;
   padding-top: 18px;
   border-top: 1px solid #DADADA;
 }
@@ -1382,15 +1450,18 @@
   }
 
   .contenido-detalles {
+    gap: 18px;
     padding: 18px 14px;
   }
 
-  .detalles-grid {
-    grid-template-columns: 1fr;
+  .tabla-detalle th,
+  .tabla-detalle td {
+    padding: 12px;
   }
 
-  .detalles-grid .detalle-completo {
-    grid-column: auto;
+  .tabla-detalle th:first-child,
+  .tabla-detalle td:first-child {
+    width: 35%;
   }
 
   .actualizar-estado-tabla {
@@ -1410,6 +1481,11 @@
 
   .boton-ir-alertas {
     width: 100%;
+  }
+
+  .panel-accesos {
+    margin-bottom: 35px;
+    padding: 23px 18px;
   }
 }
 
@@ -1436,6 +1512,7 @@
 
   .panel-accesos {
     margin-bottom: 28px;
+    padding: 20px 14px;
   }
 
   .panel-seccion-encabezado h2 {
@@ -1501,12 +1578,41 @@
   }
 
   .contenido-detalles {
+    gap: 16px;
     padding: 15px 10px;
+  }
+
+  .seccion-tabla-detalle h3 {
+    padding: 7px 13px;
+    font-size: 14px;
+  }
+
+  .tabla-detalle {
+    table-layout: auto;
+  }
+
+  .tabla-detalle th,
+  .tabla-detalle td {
+    padding: 10px;
+    font-size: 12px;
+  }
+
+  .tabla-detalle th:first-child,
+  .tabla-detalle td:first-child {
+    width: 38%;
+  }
+
+  .actualizar-estado-tabla {
+    gap: 10px;
+  }
+
+  .encabezado-recomendacion h4 {
+    min-width: 0;
   }
 }
 
 /* ========================================
-   PANEL PRINCIPAL
+   PANEL PRINCIPAL - AJUSTES GENERALES
 ======================================== */
 
 .panel-principal {
@@ -1544,7 +1650,7 @@
 }
 
 /* ========================================
-   DISEÑO ADAPTABLE
+   DISEÑO ADAPTABLE - PANELES
 ======================================== */
 
 @media (max-width: 768px) {
@@ -1567,4 +1673,14 @@
   .panel-estado-seguridad {
     padding: 20px 14px;
   }
+}
+
+/* BOTÓN DE ANÁLISIS DE RIESGO */
+
+.boton-accion.boton-analizar {
+  background: #C62828;
+}
+
+.boton-accion.boton-analizar:hover:not(:disabled) {
+  background: #A61F1F;
 }

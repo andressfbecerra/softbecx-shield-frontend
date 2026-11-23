@@ -6,6 +6,8 @@ import useSeguimiento from '../context/useSeguimiento'
 function FilaIncidente({
   incidente,
   analisisRiesgo,
+  recomendaciones,
+  onAnalizarIncidente,
   onActualizarEstado,
   onEliminarIncidente,
   onAgregarSeguimiento,
@@ -13,15 +15,20 @@ function FilaIncidente({
   mostrarDetalles,
   onToggleDetalles
 }) {
-  const [estadoSeleccionado, setEstadoSeleccionado] = useState(
-    incidente.estado || 'PENDIENTE'
-  )
+  const [seleccionEstado, setSeleccionEstado] = useState(null)
   const [guardando, setGuardando] = useState(false)
+  const [analizando, setAnalizando] = useState(false)
   const [eliminando, setEliminando] = useState(false)
   const [mensaje, setMensaje] = useState('')
   const [error, setError] = useState('')
 
   const estado = incidente.estado || 'SIN ESTADO'
+  const estadoActual = incidente.estado || 'PENDIENTE'
+
+  const estadoSeleccionado =
+    seleccionEstado?.estadoBase === estadoActual
+      ? seleccionEstado.valor
+      : estadoActual
 
   useEffect(() => {
     if (!mensaje) {
@@ -30,7 +37,7 @@ function FilaIncidente({
 
     const temporizador = window.setTimeout(() => {
       setMensaje('')
-    }, 1000)
+    }, 3000)
 
     return () => {
       window.clearTimeout(temporizador)
@@ -45,26 +52,61 @@ function FilaIncidente({
       .replace('revision', 'revisión')
   }
 
+  function formatearFecha(fecha, incluirHora = false) {
+    if (!fecha) {
+      return 'No disponible'
+    }
+
+    return new Date(fecha).toLocaleString(
+      'es-CO',
+      incluirHora
+        ? undefined
+        : {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+          }
+    )
+  }
+
+  async function analizar() {
+    setAnalizando(true)
+    setMensaje('')
+    setError('')
+
+    try {
+      await onAnalizarIncidente(incidente.idIncidente)
+      setMensaje('Análisis de riesgo ejecutado correctamente.')
+    } catch (error) {
+      console.error('Error al analizar el incidente:', error)
+
+      const mensajeServidor = error.response?.data?.mensaje
+
+      setError(
+        mensajeServidor ||
+        'No fue posible ejecutar el análisis. Inténtalo nuevamente.'
+      )
+    } finally {
+      setAnalizando(false)
+    }
+  }
+
   async function guardarEstado() {
     setGuardando(true)
     setMensaje('')
     setError('')
 
     try {
-      const incidenteActualizado = await onActualizarEstado(
+      await onActualizarEstado(
         incidente,
         estadoSeleccionado
-      )
-
-      setEstadoSeleccionado(
-        incidenteActualizado?.estado || estadoSeleccionado
       )
 
       setMensaje('Estado actualizado correctamente.')
     } catch (error) {
       console.error('Error al actualizar el incidente:', error)
 
-      setEstadoSeleccionado(incidente.estado || 'PENDIENTE')
+      setSeleccionEstado(null)
       setError('No fue posible actualizar el incidente. Inténtalo nuevamente.')
     } finally {
       setGuardando(false)
@@ -150,15 +192,25 @@ function FilaIncidente({
               className="boton-accion boton-detalles-tabla"
               onClick={() => onToggleDetalles(incidente.idIncidente)}
               aria-expanded={mostrarDetalles}
+              disabled={analizando || eliminando}
             >
               {mostrarDetalles ? 'Ocultar' : 'Detalles'}
             </button>
 
             <button
               type="button"
+              className="boton-accion boton-analizar"
+              onClick={analizar}
+              disabled={analizando || eliminando || guardando}
+            >
+              {analizando ? 'Analizando...' : 'Analizar'}
+            </button>
+
+            <button
+              type="button"
               className={`boton-accion boton-seguir ${enSeguimiento ? 'accion-agregada' : ''}`}
               onClick={() => onAgregarSeguimiento(incidente.idIncidente)}
-              disabled={enSeguimiento || guardando || eliminando}
+              disabled={enSeguimiento || guardando || eliminando || analizando}
             >
               {enSeguimiento ? 'En seguimiento' : 'Seguir'}
             </button>
@@ -167,7 +219,7 @@ function FilaIncidente({
               type="button"
               className="boton-accion boton-eliminar"
               onClick={eliminar}
-              disabled={guardando || eliminando}
+              disabled={guardando || eliminando || analizando}
             >
               {eliminando ? 'Eliminando...' : 'Eliminar'}
             </button>
@@ -179,89 +231,173 @@ function FilaIncidente({
         <tr className="fila-detalles">
           <td colSpan="7">
             <div className="contenido-detalles">
-              <h3>Información del incidente</h3>
+              <section className="seccion-tabla-detalle">
+                <h3>Información del incidente</h3>
 
-              <div className="detalles-grid">
-                <p>
-                  <strong>ID del incidente:</strong>{' '}
-                  {incidente.idIncidente}
-                </p>
+                <table className="tabla-detalle">
+                  <thead>
+                    <tr>
+                      <th>Campo</th>
+                      <th>Información</th>
+                    </tr>
+                  </thead>
 
-                <p>
-                  <strong>Origen:</strong>{' '}
-                  {incidente.origen || 'No disponible'}
-                </p>
+                  <tbody>
+                    <tr>
+                      <td>ID del incidente</td>
+                      <td>{incidente.idIncidente}</td>
+                    </tr>
 
-                <p>
-                  <strong>Usuario:</strong>{' '}
-                  {incidente.nombreUsuario || 'Sin usuario asociado'}
-                </p>
+                    <tr>
+                      <td>Título</td>
+                      <td>{incidente.titulo || 'No disponible'}</td>
+                    </tr>
 
-                <p>
-                  <strong>ID del usuario:</strong>{' '}
-                  {incidente.idUsuario || 'Sin usuario asociado'}
-                </p>
+                    <tr>
+                      <td>Descripción</td>
+                      <td>{incidente.descripcion || 'No disponible'}</td>
+                    </tr>
 
-                <p>
-                  <strong>Correo:</strong>{' '}
-                  {incidente.correoUsuario || 'No disponible'}
-                </p>
+                    <tr>
+                      <td>Tipo de incidente</td>
+                      <td>{formatearEtiqueta(incidente.tipoIncidente)}</td>
+                    </tr>
 
-                <p>
-                  <strong>Fecha de registro:</strong>{' '}
-                  {incidente.fechaRegistro
-                    ? new Date(incidente.fechaRegistro).toLocaleString('es-CO')
-                    : 'No disponible'}
-                </p>
-              </div>
+                    <tr>
+                      <td>Origen</td>
+                      <td>{incidente.origen || 'No disponible'}</td>
+                    </tr>
 
-              {analisisRiesgo && (
-                <>
-                  <h3>Información del análisis de riesgo</h3>
+                    <tr>
+                      <td>Estado</td>
+                      <td>{formatearEtiqueta(incidente.estado)}</td>
+                    </tr>
 
-                  <div className="detalles-grid">
-                    <p>
-                      <strong>ID del análisis:</strong>{' '}
-                      {analisisRiesgo.idAnalisis || 'No disponible'}
-                    </p>
+                    <tr>
+                      <td>Usuario</td>
+                      <td>{incidente.nombreUsuario || 'Sin usuario asociado'}</td>
+                    </tr>
 
-                    <p>
-                      <strong>Método:</strong>{' '}
-                      {analisisRiesgo.metodoAnalisis || 'No disponible'}
-                    </p>
+                    <tr>
+                      <td>ID del usuario</td>
+                      <td>{incidente.idUsuario ?? 'Sin usuario asociado'}</td>
+                    </tr>
 
-                    <p>
-                      <strong>Nivel de riesgo:</strong>{' '}
-                      {formatearEtiqueta(analisisRiesgo.nivelRiesgo)}
-                    </p>
+                    <tr>
+                      <td>Correo electrónico</td>
+                      <td>{incidente.correoUsuario || 'No disponible'}</td>
+                    </tr>
 
-                    <p>
-                      <strong>Puntaje:</strong>{' '}
-                      {analisisRiesgo.puntajeRiesgo != null
-                        ? `${analisisRiesgo.puntajeRiesgo} puntos`
-                        : 'No disponible'}
-                    </p>
+                    <tr>
+                      <td>Fecha de registro</td>
+                      <td>{formatearFecha(incidente.fechaRegistro, true)}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
 
-                    <p>
-                      <strong>Fecha del análisis:</strong>{' '}
-                      {analisisRiesgo.fechaAnalisis
-                        ? new Date(analisisRiesgo.fechaAnalisis).toLocaleString('es-CO')
-                        : 'No disponible'}
-                    </p>
-                  </div>
+              <section className="seccion-tabla-detalle">
+                <h3>Información del análisis de riesgo</h3>
 
-                  <p>
-                    <strong>Explicación del riesgo:</strong>{' '}
-                    {analisisRiesgo.explicacion || 'No disponible'}
+                {analisisRiesgo ? (
+                  <table className="tabla-detalle">
+                    <thead>
+                      <tr>
+                        <th>Campo</th>
+                        <th>Información</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <tr>
+                        <td>ID del análisis</td>
+                        <td>{analisisRiesgo.idAnalisis ?? 'No disponible'}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Método de análisis</td>
+                        <td>{analisisRiesgo.metodoAnalisis || 'No disponible'}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Nivel de riesgo</td>
+                        <td>{formatearEtiqueta(analisisRiesgo.nivelRiesgo)}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Puntaje de riesgo</td>
+                        <td>
+                          {analisisRiesgo.puntajeRiesgo != null
+                            ? `${analisisRiesgo.puntajeRiesgo} puntos`
+                            : 'No disponible'}
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td>Fecha del análisis</td>
+                        <td>{formatearFecha(analisisRiesgo.fechaAnalisis, true)}</td>
+                      </tr>
+
+                      <tr>
+                        <td>Explicación del riesgo</td>
+                        <td>
+                          {analisisRiesgo.explicacionAnalisis ||
+                            analisisRiesgo.explicacion ||
+                            'No disponible'}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="mensaje-tabla-detalle">
+                    Este incidente todavía no tiene un análisis de riesgo disponible.
                   </p>
-                </>
-              )}
+                )}
+              </section>
 
-              {!analisisRiesgo && (
-                <p>
-                  Este incidente todavía no tiene un análisis de riesgo disponible.
-                </p>
-              )}
+              <section className="seccion-tabla-detalle">
+                <h3>Recomendaciones de seguridad</h3>
+
+                {recomendaciones.length > 0 ? (
+                  <table className="tabla-detalle">
+                    <thead>
+                      <tr>
+                        <th>Campo</th>
+                        <th>Información</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      {recomendaciones.map((recomendacion) => (
+                        <tr key={recomendacion.idRecomendacion}>
+                          <td>
+                            <strong>{recomendacion.titulo || 'Recomendación'}</strong>
+
+                            <span className="detalle-prioridad">
+                              Prioridad:{' '}
+                              {formatearEtiqueta(recomendacion.prioridad)}
+                            </span>
+                          </td>
+
+                          <td>
+                            <p className="descripcion-tabla-recomendacion">
+                              {recomendacion.descripcion || 'Sin descripción disponible'}
+                            </p>
+
+                            <small className="identificador-recomendacion">
+                              Recomendación #{recomendacion.idRecomendacion}
+                            </small>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <p className="mensaje-tabla-detalle">
+                    Este análisis todavía no tiene recomendaciones de seguridad registradas.
+                  </p>
+                )}
+              </section>
 
               <div className="actualizar-estado-tabla">
                 <label htmlFor={`estado-${incidente.idIncidente}`}>
@@ -272,11 +408,14 @@ function FilaIncidente({
                   id={`estado-${incidente.idIncidente}`}
                   value={estadoSeleccionado}
                   onChange={(evento) => {
-                    setEstadoSeleccionado(evento.target.value)
+                    setSeleccionEstado({
+                      estadoBase: estadoActual,
+                      valor: evento.target.value
+                    })
                     setMensaje('')
                     setError('')
                   }}
-                  disabled={guardando || eliminando}
+                  disabled={guardando || eliminando || analizando}
                 >
                   <option value="PENDIENTE">Pendiente</option>
                   <option value="EN_REVISION">En revisión</option>
@@ -290,7 +429,8 @@ function FilaIncidente({
                   disabled={
                     guardando ||
                     eliminando ||
-                    estadoSeleccionado === estado
+                    analizando ||
+                    estadoSeleccionado === estadoActual
                   }
                 >
                   {guardando ? 'Guardando...' : 'Guardar estado'}
@@ -325,9 +465,11 @@ function AlertasPage() {
 
   const [incidentes, setIncidentes] = useState([])
   const [analisisRiesgo, setAnalisisRiesgo] = useState([])
+  const [recomendaciones, setRecomendaciones] = useState([])
   const [cargando, setCargando] = useState(true)
   const [error, setError] = useState('')
   const [errorAnalisis, setErrorAnalisis] = useState('')
+  const [errorRecomendaciones, setErrorRecomendaciones] = useState('')
 
   const [busqueda, setBusqueda] = useState('')
   const [filtroTipo, setFiltroTipo] = useState('')
@@ -341,11 +483,13 @@ function AlertasPage() {
       try {
         const resultados = await Promise.allSettled([
           api.get('/incidentes'),
-          api.get('/analisis-riesgo')
+          api.get('/analisis-riesgo'),
+          api.get('/recomendaciones')
         ])
 
         const resultadoIncidentes = resultados[0]
         const resultadoAnalisis = resultados[1]
+        const resultadoRecomendaciones = resultados[2]
 
         if (resultadoIncidentes.status === 'fulfilled') {
           setIncidentes(resultadoIncidentes.value.data)
@@ -367,6 +511,20 @@ function AlertasPage() {
             'No fue posible cargar los análisis de riesgo. Los incidentes seguirán disponibles, pero sus niveles y puntajes podrían no mostrarse.'
           )
         }
+
+        if (resultadoRecomendaciones.status === 'fulfilled') {
+          setRecomendaciones(resultadoRecomendaciones.value.data)
+          setErrorRecomendaciones('')
+        } else {
+          console.error(
+            'Error al consultar las recomendaciones:',
+            resultadoRecomendaciones.reason
+          )
+
+          setErrorRecomendaciones(
+            'No fue posible cargar las recomendaciones de seguridad.'
+          )
+        }
       } catch (error) {
         console.error('Error al consultar los datos:', error)
 
@@ -385,6 +543,21 @@ function AlertasPage() {
     setIncidenteDetallesAbiertos((idActual) =>
       idActual === idIncidente ? null : idIncidente
     )
+  }
+
+  async function analizarIncidente(idIncidente) {
+    await api.post(`/analisis-riesgo/incidente/${idIncidente}`)
+
+    const resultados = await Promise.all([
+      api.get('/analisis-riesgo'),
+      api.get('/recomendaciones')
+    ])
+
+    setAnalisisRiesgo(resultados[0].data)
+    setRecomendaciones(resultados[1].data)
+
+    setErrorAnalisis('')
+    setErrorRecomendaciones('')
   }
 
   async function actualizarEstado(incidente, nuevoEstado) {
@@ -420,6 +593,14 @@ function AlertasPage() {
   async function eliminarIncidente(idIncidente) {
     await api.delete(`/incidentes/${idIncidente}`)
 
+    const analisisRelacionados = analisisRiesgo.filter(
+      (analisis) => analisis.idIncidente === idIncidente
+    )
+
+    const idsAnalisisRelacionados = analisisRelacionados.map(
+      (analisis) => analisis.idAnalisis
+    )
+
     setIncidentes((listaAnterior) =>
       listaAnterior.filter(
         (incidente) => incidente.idIncidente !== idIncidente
@@ -429,6 +610,13 @@ function AlertasPage() {
     setAnalisisRiesgo((listaAnterior) =>
       listaAnterior.filter(
         (analisis) => analisis.idIncidente !== idIncidente
+      )
+    )
+
+    setRecomendaciones((listaAnterior) =>
+      listaAnterior.filter(
+        (recomendacion) =>
+          !idsAnalisisRelacionados.includes(recomendacion.idAnalisis)
       )
     )
 
@@ -472,6 +660,22 @@ function AlertasPage() {
     ) {
       analisisPorIncidente[idIncidente] = analisis
     }
+  })
+
+  const recomendacionesPorAnalisis = {}
+
+  recomendaciones.forEach((recomendacion) => {
+    const idAnalisis = recomendacion.idAnalisis
+
+    if (idAnalisis == null) {
+      return
+    }
+
+    if (!recomendacionesPorAnalisis[idAnalisis]) {
+      recomendacionesPorAnalisis[idAnalisis] = []
+    }
+
+    recomendacionesPorAnalisis[idAnalisis].push(recomendacion)
   })
 
   const tiposDisponibles = [
@@ -564,6 +768,12 @@ function AlertasPage() {
       {!cargando && !error && errorAnalisis && (
         <p className="mensaje-error" role="status">
           {errorAnalisis}
+        </p>
+      )}
+
+      {!cargando && !error && errorRecomendaciones && (
+        <p className="mensaje-error" role="status">
+          {errorRecomendaciones}
         </p>
       )}
 
@@ -684,25 +894,34 @@ function AlertasPage() {
                 </thead>
 
                 <tbody>
-                  {incidentesFiltrados.map((incidente) => (
-                    <FilaIncidente
-                      key={incidente.idIncidente}
-                      incidente={incidente}
-                      analisisRiesgo={
-                        analisisPorIncidente[incidente.idIncidente] || null
-                      }
-                      onActualizarEstado={actualizarEstado}
-                      onEliminarIncidente={eliminarIncidente}
-                      onAgregarSeguimiento={agregarAlSeguimiento}
-                      enSeguimiento={idsSeguimiento.includes(
-                        incidente.idIncidente
-                      )}
-                      mostrarDetalles={
-                        incidenteDetallesAbiertos === incidente.idIncidente
-                      }
-                      onToggleDetalles={alternarDetalles}
-                    />
-                  ))}
+                  {incidentesFiltrados.map((incidente) => {
+                    const analisis =
+                      analisisPorIncidente[incidente.idIncidente] || null
+
+                    const recomendacionesDelAnalisis = analisis
+                      ? recomendacionesPorAnalisis[analisis.idAnalisis] || []
+                      : []
+
+                    return (
+                      <FilaIncidente
+                        key={incidente.idIncidente}
+                        incidente={incidente}
+                        analisisRiesgo={analisis}
+                        recomendaciones={recomendacionesDelAnalisis}
+                        onAnalizarIncidente={analizarIncidente}
+                        onActualizarEstado={actualizarEstado}
+                        onEliminarIncidente={eliminarIncidente}
+                        onAgregarSeguimiento={agregarAlSeguimiento}
+                        enSeguimiento={idsSeguimiento.includes(
+                          incidente.idIncidente
+                        )}
+                        mostrarDetalles={
+                          incidenteDetallesAbiertos === incidente.idIncidente
+                        }
+                        onToggleDetalles={alternarDetalles}
+                      />
+                    )
+                  })}
                 </tbody>
               </table>
             </div>
